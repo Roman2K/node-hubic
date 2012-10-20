@@ -27,7 +27,7 @@ function get(login, password, callback) {
 }
 
 function getSessionID(login, password, callback) {
-  async.waterfall([get, parseResponse, extract], callback);
+  async.waterfall([get, parseResponse, checkForError, extract], callback);
 
   function get(cb) {
     var url = BASE_URL + '/nasLogin'
@@ -44,8 +44,8 @@ function getSessionID(login, password, callback) {
      *   "login":"ro[...]@gmail.com"},"version":"1.0","error":null,"id":0}
      */
     
-    if (result.error) return cb(new Error('error from /nasLogin: ' + result.error));
-    if (!result.answer || !result.answer.id) return cb(new Error('malformed response from /nasLogin'));
+    if (!result.answer || !result.answer.id)
+      return cb(new Error('malformed response from /nasLogin'));
 
     cb(null, result.answer.id);
   }
@@ -54,7 +54,7 @@ function getSessionID(login, password, callback) {
 function getURL(sessionID, callback) {
   var url = BASE_URL + '/getNas';
 
-  async.waterfall([get, parseResponse, extract], callback);
+  async.waterfall([get, parseResponse, checkForError, extract], callback);
 
   function get(cb) {
     request.post(BASE_URL + '/getNas', {form: {session: sessionID}}, cb);
@@ -77,15 +77,15 @@ function getURL(sessionID, callback) {
      *   id: 0 }
      */
 
-     if (result.error) return cb(new Error('error from /getNas: ' + result.error));
-     if (!result.answer || !result.answer.url) return cb(new Error('malformed response from /getNas'));
+     if (!result.answer || !result.answer.url)
+       return cb(new Error('malformed response from /getNas'));
 
      cb(null, result.answer.url);
   }
 }
 
 function getCredentials(sessionID, callback) {
-  async.waterfall([get, parseResponse, extract], callback);
+  async.waterfall([get, parseResponse, checkForError, extract], callback);
 
   function get(cb) {
     request.post(BASE_URL + '/getCredentials', {form: {session: sessionID}}, cb);
@@ -101,9 +101,6 @@ function getCredentials(sessionID, callback) {
      *   error: null,
      *   id: 0 }
      */
-
-    if (result.error)
-      return cb(new Error('error from /getCredentials: ' + result.error));
 
     if (!result.answer || !result.answer.username || !result.answer.secret)
       return cb(new Error('malformed response from /getCredentials'));
@@ -131,6 +128,24 @@ function parseResponse(res, body, callback) {
 
     callback(null, result);
   }
+}
+
+function checkForError(result, callback) {
+  var err = result.error;
+  if (!err) return callback(null, result);
+
+  /*
+   * { __class: 'result:error',
+   *   value: null,
+   *   status: '310',
+   *   exceptionType: 'LoginFailed',
+   *   message: 'Wrong user id or password: Can\'t Login' }
+   */
+
+  if (!err.exceptionType || !err.message)
+    return callback(new Error('API error: ' + JSON.stringify(err)));
+
+  return callback(new Error('' + err.exceptionType + ': ' + err.message));
 }
 
 exports.get = get;

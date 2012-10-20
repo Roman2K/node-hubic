@@ -12,4 +12,8 @@
     "async": "0.1.22"
   , "request": "2.11.4"
   }
+, "devDependencies": {
+    "async": "0.1.22"
+  , "commander": "1.0.5"
+  }
 }
