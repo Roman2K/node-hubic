@@ -1,4 +1,4 @@
-const hubic = require('./index')
+const hubic = require('../index')
     , async = require('async')
     , program = require('commander');
 

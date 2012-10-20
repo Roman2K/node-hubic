@@ -1,1 +1,1 @@
-exports.getWebdavCredentials = require('./webdav_credentials').get;
+exports.getWebdavCredentials = require('./lib/webdav_credentials').get;
