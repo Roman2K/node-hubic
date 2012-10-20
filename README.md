@@ -6,7 +6,7 @@ focused on the WebDAV URL and credentials.
 ## Usage
 
 hubiC drives are mounted via the WebDAV protocol, as [described][protocol] by
-(GR)[http://protocol-hacking.org/].
+[GR](http://protocol-hacking.org/).
 
 The URL, login and password can be fetched as follows:
 
