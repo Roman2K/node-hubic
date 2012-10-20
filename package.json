@@ -1,0 +1,15 @@
+{
+  "name": "hubic"
+, "version": "0.0.1"
+, "description": "Client for the hubiC API"
+, "author": "Roman Le Négrate"
+, "licenses": [{
+    "type": "Unlicense"
+  , "url": "http://unlicense.org"
+  }]
+, "main": "./index"
+, "dependencies": {
+    "async": "0.1.22"
+  , "request": "2.11.4"
+  }
+}
