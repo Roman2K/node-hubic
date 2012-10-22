@@ -5,10 +5,10 @@ focused on the WebDAV URL and credentials.
 
 ## Example
 
-See `examples/`:
+See `example/`:
 
 ```bash
-$ node examples/webdav_credentials.js
+$ node example/webdav_credentials.js
 ```
 
 ## Usage
