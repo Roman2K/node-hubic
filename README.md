@@ -6,6 +6,14 @@ focused on the WebDAV URL and credentials.
 Warning: The API this library relies on has been deprecated and no longer
 responds to requests.
 
+## Example
+
+See `example/`:
+
+```bash
+$ node example/webdav_credentials.js
+```
+
 ## Usage
 
 hubiC drives are mounted via the WebDAV protocol, as [described][protocol] by
@@ -25,6 +33,17 @@ hubic.getWebdavCredentials(login, password, function(err, creds) {
   console.log('login =', creds.login);
   console.log('password =', creds.password);
 });
+```
+
+### Specifying a proxy
+
+In order to fetch WebDAV info, `getWebdavCredentials()` makes HTTP requests to
+OVH. In order to pass through a proxy, specify a `request` module with the
+defaults overridden:
+
+```javascript
+var proxiedRequest = request.defaults({proxy: 'http://my-proxy:3128'});
+hubic.getWebdavCredentials(login, password, {request: proxiedRequest}, callback);
 ```
 
 [hubic]: http://www.ovh.fr/hubiC/

@@ -1,6 +1,9 @@
 const hubic = require('../index')
     , async = require('async')
-    , program = require('commander');
+    , program = require('commander')
+    , requestStock = require('request');
+
+var request = requestStock.defaults({proxy: process.env.http_proxy});
 
 program
   .option('-l, --login <login>', 'hubiC login (e-mail address)')
@@ -26,7 +29,7 @@ function fetch(err, results) {
   var login = results.login
     , password = results.password;
 
-  hubic.getWebdavCredentials(login, password, function(err, creds) {
+  hubic.getWebdavCredentials(login, password, {request: request}, function(err, creds) {
     if (err) throw err;
     console.log('url =', creds.url);
     console.log('login =', creds.login);
