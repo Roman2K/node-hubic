@@ -3,7 +3,7 @@
 Client for the [hubiC][hubic] (undocumented) API. Currently only partial,
 focused on the WebDAV URL and credentials.
 
-Warning: The API this library relies on has been deprecated and no longer
+**Warning:** The API this library relies on has been deprecated and no longer
 responds to requests.
 
 ## Example
